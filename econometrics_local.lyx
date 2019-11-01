@@ -115,9 +115,9 @@ theorems-ams-extended
 \shortcut idx
 \color #008000
 \end_index
-\leftmargin 2cm
+\leftmargin 3cm
 \topmargin 2cm
-\rightmargin 2cm
+\rightmargin 3cm
 \bottommargin 2cm
 \secnumdepth 1
 \tocdepth 1
@@ -153,13 +153,6 @@ Michael Creel
 
 \begin_inset Graphics
 	filename logoUAB.jpg
-	width 8cm
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename bgselogo.jpg
 	width 8cm
 
 \end_inset
@@ -436,9 +429,9 @@ Julia
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename Examples/Figures/julia.png
+	filename example.png
 	lyxscale 25
-	width 4in
+	width 10in
 
 \end_inset
 
@@ -703,6 +696,555 @@ lyx -e pdf2 econometrics_local.lyx
 the result will be an econometrics_local.pdf file
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Introduction to Julia
+\end_layout
+
+\begin_layout Standard
+This document uses the 
+\begin_inset CommandInset href
+LatexCommand href
+name " Julia programming language"
+target "https://julialang.org/"
+literal "false"
+
+\end_inset
+
+ for most of the examples.
+ This chapter gives a very bare bones introduction to Julia.
+ There are much better introductory materials from other sources, some of
+ which are noted below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Why Julia?
+\end_layout
+
+\begin_layout Itemize
+free: free in terms of $$$, and also, source code is free, so you can know
+ exactly what it does, and you can modify it and contribute to it
+\end_layout
+
+\begin_layout Itemize
+multi-platform: runs on all the popular operating systems.
+ For teaching econometrics, this is nice, because all students have equal
+ access to the materials.
+\end_layout
+
+\begin_layout Itemize
+fast: speed of well-written code is close to C or Fortan.
+ Code is relatively easy to write and to read, similar to Matlab or other
+ matrix scripting languages
+\end_layout
+
+\begin_layout Itemize
+the above 3 considerations are essentially necessary for a language for
+ modern science, which requires accessibility, verifiability, and performance
+\end_layout
+
+\begin_layout Itemize
+also, it's fun: the ecosystem is still developing rapidly, plenty of room
+ to contribute
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Why not Julia?
+\end_layout
+
+\begin_layout Itemize
+Julia code is compiled before it's run.
+ This means that first calls to functions take a bit of time, as they are
+ compiled.
+ The second call will be much faster-Interactive use may frustrate quite
+ a bit, at least until you learn to work around this particularity.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+this will get better over time, as support for pre-compilation improves
+\end_layout
+
+\begin_layout Itemize
+can be dealt with quite easily by warming up functions with toy usages,
+ which you might include in your startup file.
+\end_layout
+
+\begin_layout Itemize
+Also, keep your Julia session running, and the things you use often will
+ already be compiled from previous uses.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+the speed is only needed if your work is computationally demanding.
+ Dividing epsilon by 2 is not very important when epsilon is small.
+ For getting fast results for linear models, you may prefer a more complete
+ canned package, e.g., Stata, etc.
+\end_layout
+
+\begin_layout Itemize
+the ecosystem is still developing, some features like DataFrames and plotting
+ are not as complete or stable as in other languages.
+ However, I have been using it happily since 2014, and have been getting
+ work done.
+ 
+\strikeout on
+Once the 1.0 release is out, 
+\begin_inset Quotes sld
+\end_inset
+
+real soon now
+\begin_inset Quotes srd
+\end_inset
+
+, things will stabilize
+\strikeout default
+ Strike that! Julia 1.0 was released in August 2018.
+ The basic language is now quite stable, though packages are still developing
+ at a quick rate.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Resources
+\end_layout
+
+\begin_layout Itemize
+Julia language: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://julialang.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+tutorials:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Recommended! 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/PaulSoderlind/JuliaTutorial
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+More detailed.
+ 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://ucidatascienceinitiative.github.io/IntroToJulia/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Recommended! Quantitative Economics: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://lectures.quantecon.org/jl/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Installation of Julia and packages
+\end_layout
+
+\begin_layout Itemize
+install Julia stable version from 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://julialang.org/downloads/
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Getting started: 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://docs.julialang.org/en/v1/manual/getting-started/"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Package manager documentation: 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://docs.julialang.org/en/v1/stdlib/Pkg/"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The first thing you will need to do to make full use of this document is
+ to install the examples and the support code.
+ The main commands for packages:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+from the REPL, press ] to enter package mode.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+]?
+\family default
+ : help for package mode.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+] add
+\family default
+ : Add a package.
+ e.g., to add the package that supports these notes, do the following
+\family typewriter
+: ] add https://github.com/mcreel/Econometrics.git
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+That will install the code and the required packages.
+ If you see an error about missing some package, just install what's missing.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Recommended packages (amongst many others):
+\family typewriter
+ ] add OhMyREPL Revise
+\end_layout
+
+\begin_layout Itemize
+Recommended: put 
+\family typewriter
+using Revise; using OhMyREPL; using Econometrics
+\family default
+ in your 
+\family typewriter
+~/.julia/config/startup.jl
+\family default
+ file so that they are automatically used when you start Julia
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Running Julia and the work flow
+\end_layout
+
+\begin_layout Subsection
+REPL and text editor
+\end_layout
+
+\begin_layout Itemize
+The REPL (
+\begin_inset Quotes sld
+\end_inset
+
+read-eval-print loop
+\begin_inset Quotes srd
+\end_inset
+
+ ), or in more plain parlance, the Julia command prompt, is my main way
+ of working for research.
+ Simple and easy to replicate.
+ On Linux, just open a terminal and type 
+\begin_inset Quotes sld
+\end_inset
+
+julia
+\begin_inset Quotes srd
+\end_inset
+
+.
+ You can run your code in one window, and edit it in another.
+\end_layout
+
+\begin_layout Subsection
+IJulia/Jupyter notebooks
+\end_layout
+
+\begin_layout Itemize
+Good for presentations, but I find it cumbersome for research and daily
+ work
+\end_layout
+
+\begin_layout Itemize
+Show it by doing 
+\family typewriter
+] add IJulia using IJulia; notebook()
+\end_layout
+
+\begin_layout Subsection
+Juno/Atom
+\end_layout
+
+\begin_layout Itemize
+If you want something more modern (?) and integrated looking than the REPL
+ and a text editor, check out the Juno editor :
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://junolab.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Loading/saving data
+\end_layout
+
+\begin_layout Standard
+The examples that follow in later chapters provide some examples.
+ Relevant commands are:
+\end_layout
+
+\begin_layout Itemize
+using DelimitedFiles; ?readdlm, ?writedlm
+\end_layout
+
+\begin_layout Itemize
+using CSV;
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+?CSV.read for reading CSV files into with variable names in the first row
+ into a dataframe
+\end_layout
+
+\begin_layout Itemize
+?CSV.write
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+For more information, see 
+\begin_inset CommandInset href
+LatexCommand href
+name "https://github.com/PaulSoderlind/JuliaTutorial/blob/master/Tutorial_09_LoadSaveData.ipynb"
+target "https://github.com/PaulSoderlind/JuliaTutorial/blob/master/Tutorial_09_LoadSaveData.ipynb"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Example data sets to practice on:
+\end_layout
+
+\begin_layout Standard
+CSV with names: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/mcreel/Econometrics/blob/master/Examples/Data/card.csv
+\end_layout
+
+\end_inset
+
+, and
+\end_layout
+
+\begin_layout Standard
+plain text, space delimited: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/mcreel/Econometrics/blob/master/Examples/Data/nerlove.data
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Exploratory analysis and plotting
+\end_layout
+
+\begin_layout Standard
+This section needs work, but the following two examples can give you ideas:
+\end_layout
+
+\begin_layout Itemize
+Using DataFrames and StatPlots for exploratory analysis: 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+htmladdnormallink{BasicDataAnalysis.jl}{file:///home/michael/Mystuff/Econometrics
+/Examples/Julia/BasicDataAnalysis.jl} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Data wrangling: transforming, adding variables, etc.: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+htmladdnormallink{DataWrangling.jl}{file:///home/michael/Mystuff/Econometrics/Exa
+mples/Julia/DataWrangling.jl} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.juliabloggers.com/data-wrangling-in-julia-based-on-dplyr-flights-tutor
+ials/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/piever/JuliaDBTutorial/blob/master/hflights.ipynb
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
 \begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
@@ -1167,7 +1709,7 @@ quantify
 \begin_inset Formula 
 \begin{align*}
 q_{t} & =\alpha_{1}+\alpha_{2}p_{t}+\alpha_{3}m_{t}+\varepsilon_{t1}\\
-q_{t} & =\beta_{1}+\beta_{2}p_{t}+\varepsilon_{t1}
+q_{t} & =\beta_{1}+\beta_{2}p_{t}+\varepsilon_{t2}
 \end{align*}
 
 \end_inset
@@ -4343,7 +4885,7 @@ htmladdnormallink{Gretl}{http://gretl.sourceforge.net}
 
 \end_inset
 
-, the Gnu Regression, Econometrics, and Time-Series Library.
+, the GNU Regression, Econometrics, and Time-Series Library.
  Gretl is free software.
  This is an easy to use program, available in English, French, and Spanish,
  and it comes with a lot of data ready to use.
@@ -10708,6 +11250,21 @@ Stochastic restrictions and ridge regression
 \end_layout
 
 \begin_layout Standard
+Note: here's a nice introduction to ridge regression: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://towardsdatascience.com/ridge-regression-for-better-usage-2f19b3a202db
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
 Supposing that there is no more data or neglected restrictions, one possibility
  is to change perspectives, to Bayesian econometrics.
  One can express prior beliefs regarding the coefficients using stochastic
@@ -11124,10 +11681,11 @@ conometrics/Examples/DataProblems/RidgeRegression.jl}
 
  does a Monte Carlo study that shows that ridge regression can help to deal
  with collinearity.
- This script generates Figures and, which show the Monte Carlo sampling
- frequency of the OLS and ridge estimators, after subtracting the true parameter
- values.
- You can see that the ridge estimator has much lower RMSE.
+ This script generates the following figures, which show the Monte Carlo
+ sampling frequency of the OLS and ridge estimators, after subtracting the
+ true parameter values.
+ You can see that the ridge estimator has much lower RMSE: both histograms
+ are centered close to zero, but the ridge histogram is much tighter.
 \end_layout
 
 \begin_layout Standard
@@ -20956,8 +21514,8 @@ X_{1}^{\prime}P_{X}Y_{1} & X_{1}^{\prime}X_{1}
 
 \end_inset
 
- Therefore, the first and seconds in the variance formula cancel, so the
- 2SLS varcov estimator simplifies to 
+ Therefore, the first and second terms in the variance formula cancel, so
+ the 2SLS varcov estimator simplifies to 
 \begin_inset Formula 
 \[
 \hat{V}(\hat{\delta})=\left(Z^{\prime}\hat{Z}\right)^{-1}\hat{\sigma}_{IV}^{2}
@@ -20975,7 +21533,7 @@ X_{1}^{\prime}P_{X}Y_{1} & X_{1}^{\prime}X_{1}
 \end_inset
 
 Finally, recall that though this is presented in terms of the first equation,
- it is general since any equation can be placed first.
+ it is general, since any equation can be placed first.
 \end_layout
 
 \begin_layout Standard
@@ -42959,14 +43517,12 @@ GE/GMM/DoGMM.jl}
 
 \end_inset
 
- can be used to discover several facts about GMM estimation of nonlinear
- models.
- 
+ implements CUE-GMM estimation of the model, using the selected moment condition
+s, using simulated annealing to do the minimization
 \end_layout
 
 \begin_layout Itemize
-The final estimates, standard errors, and 95% CI bounds, obtained using
- simulated annealing are
+The final estimates, standard errors, and 95% CI bounds, are
 \begin_inset Newline newline
 \end_inset
 
@@ -43009,43 +43565,49 @@ estimate std.
 \begin_layout Plain Layout
 
 \family typewriter
-0.98855 0.00018 0.98820 0.98890
+0.98992 0.00142 0.98714 0.99271
 \end_layout
 
 \begin_layout Plain Layout
 
 \family typewriter
-2.09399 0.02677 2.04152 2.14645
+2.09990 0.32135 1.47004 2.72975
 \end_layout
 
 \begin_layout Plain Layout
 
 \family typewriter
-0.95240 0.00639 0.93987 0.96493
+0.90879 0.03585 0.83851 0.97906
 \end_layout
 
 \begin_layout Plain Layout
 
 \family typewriter
-0.01911 0.00014 0.01884 0.01939
+0.01965 0.00156 0.01659 0.02271
 \end_layout
 
 \begin_layout Plain Layout
 
 \family typewriter
-0.62351 0.02425 0.57598 0.67104
+0.74954 0.41860 -0.07091 1.56999
 \end_layout
 
 \begin_layout Plain Layout
 
 \family typewriter
-0.00948 0.00039 0.00873 0.01024
+0.00883 0.00553 -0.00202 0.01968
 \end_layout
 
 \begin_layout Plain Layout
 
 \family typewriter
-0.33169 0.00015 0.33140 0.33199
+0.33277 0.00508 0.32282 0.34272
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+julia> 
 \end_layout
 
 \end_inset
@@ -43059,43 +43621,48 @@ estimate std.
 
 \begin_layout Itemize
 care is needed to obtain a real global minimum.
- If the estimation is run several times (warning, takes some time), you
- will observe that it sometimes does not converge to the global minimum
- (function value 0.18830, I think...), even when using simulated annealing with
- a conservative cooling schedule (ns = 20, rt = 0.9).
+ The attempt to use ordinary gradient-based minimization fails.
+ A person who tried these methods might conclude that the moments don't
+ identify the parameters well, but this is not the case: it is possible
+ to obtain good results using GMM.
 \end_layout
 
 \begin_layout Itemize
-using this conservative cooling schedule is time consuming, requiring many
- function evaluations.
+Simulated annealing, on the other hand, converges to the same value in repeated
+ runs.
+ It is possible that on a given run, a different outcome might be obtained,
+ if the cooling rate is to rapid, but I have yet to see this with the current
+ setup.
 \end_layout
 
 \begin_layout Itemize
-when estimation is successful, the estimates are close to the true parameter
- values (see Table 
+SA requires many function evaluations, about 30000 with the setting in the
+ example code.
+ However, it doesn't take too long, only about 11 seconds.
+ This doesn't seem like too much time to get a reliable answer.
+\end_layout
+
+\begin_layout Itemize
+The estimates are close to the true parameter values (see Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:True-parameters-and"
 
 \end_inset
 
-), and estimated standard errors are small.
- However, for the results above, the true parameter values are not in the
- 95% confidence intervals for 6 of the seven parameters! 
+).
+ Some parameters are precisely estimated, but others, especially 
+\begin_inset Formula $\rho_{\eta}$
+\end_inset
+
+ have fairly large standard errors.
+ Perhaps better moments could be found to better identify these parameters.
 \end_layout
 
 \begin_layout Itemize
-if you attempt to use a less conservative cooling schedule, e.g., ns = 5,
- rt = 0.75 estimation will rarely be successful.
+if you attempt to use a less conservative cooling schedule, e.g., setting
+ ns = 1, rt = 0.25 estimation using SA will rarely be successful.
  
-\end_layout
-
-\begin_layout Itemize
-If one tries to estimate using gradient-based methods directly (by commenting
- out the SA part), estimation will never be successful.
- A person who tried these methods might conclude that the moments don't
- identify the parameters well, but this is not the case: it is possible
- to obtain good results using GMM.
 \end_layout
 
 \begin_layout Itemize
@@ -47406,8 +47973,8 @@ In ARCH and GARCH models, the same shocks that affect the level also affect
  A simple example is
 \begin_inset Formula 
 \begin{align*}
-y_{t} & =\exp(h_{t}/2)\epsilon_{t}\\
-h_{t} & =\alpha+\rho h_{t-1}+\sigma\eta_{t}
+y_{t} & =\sigma_{\epsilon}\exp(h_{t}/2)\epsilon_{t}\\
+h_{t} & =\rho h_{t-1}+\sigma_{u}u_{t}
 \end{align*}
 
 \end_inset
@@ -47419,10 +47986,10 @@ In this model, the log of the variance of the observed sequence follows
 \end_inset
 
  and 
-\begin_inset Formula $\eta_{t}.$
+\begin_inset Formula $u_{t}.$
 \end_inset
 
- Code to generate data from this model is here: 
+ A mini-package that let's you generate data from this model is here: 
 \begin_inset ERT
 status open
 
@@ -47430,14 +47997,14 @@ status open
 
  
 \backslash
-htmladdnormallink{EstimateStochasticVolatilityModel.jl}{file:///home/michael/Myst
-uff/Econometrics/Examples/SBEM/EstimateStochasticVolatilityModel.jl}
+htmladdnormallink{https://github.com/mcreel/SV}{https://github.com/mcreel/SV}
 \end_layout
 
 \end_inset
 
 .
- Typical data look like what we see in Figure 
+ Typical data and a nonparametric density plot look like what we see in
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:SV-model,-typical"
@@ -47445,7 +48012,7 @@ reference "fig:SV-model,-typical"
 \end_inset
 
 .
- Note the volatility clusters and the fat tails of the density.
+ Note the volatility clusters, leptokurtosis, and the fat tails of the density.
 \end_layout
 
 \begin_layout Standard
@@ -47473,66 +48040,9 @@ SV model, typical data and density
 \end_layout
 
 \begin_layout Plain Layout
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Data
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
 \begin_inset Graphics
-	filename Examples/TimeSeries/sv1.svg
+	filename Examples/TimeSeries/svdata.svg
 	width 10cm
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Density
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename Examples/TimeSeries/sv2.svg
-	width 10cm
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
 
 \end_inset
 
@@ -47558,7 +48068,7 @@ While the ARCH and GARCH models have a link between the shocks to
  This may be perfectly reasonable: even when volatility is high, the mean
  of shocks to the observables may be zero.
  An ARCH model could not account for an increase in volatility without having
- a realized extreme shock.
+ a realized extreme shock to the level.
  The SV model can allow for this.
  
 \end_layout
@@ -47571,7 +48081,7 @@ The latent shocks complicate estimation.
  and Rossi, P.E., 2002.
  Bayesian analysis of stochastic volatility models.
  Journal of Business & Economic Statistics, 20(1), pp.69-87.
- We will see an example of estimation in the chapter on simulation-based
+ We will see an examples of estimation in the chapter on simulation-based
  estimation.
 \end_layout
 
@@ -61128,7 +61638,8 @@ Examples
 \end_layout
 
 \begin_layout Subsection
-MSM and II
+MSM and Indirect inference, and Bayesian limited information simulated likelihoo
+d
 \end_layout
 
 \begin_layout Standard
@@ -61153,8 +61664,273 @@ reference "subsec:Stochastic-volatility"
 
 \end_inset
 
- by indirect inference.
- It is a bit of work in progress...
+ by indirect inference, using simulated annealing to do the minimization
+ (To run this, you need the package 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/mcreel/SV
+\end_layout
+
+\end_inset
+
+).
+ Examine the script to see what auxiliary statistics are used (this is the
+ key to success or failure), and think about the problem to try to come
+ up with some better ones.
+ The results for 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+htmladdnormallink{the sample}{file:///home/michael/Mystuff/Econometrics/Examples
+/TimeSeries/svdata.txt}
+\end_layout
+
+\end_inset
+
+ that is pictured in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:SV-model,-typical"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ (
+\begin_inset Formula $n=1000$
+\end_inset
+
+) are
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+
+\family typewriter
+true value estimate std.
+ err.
+ CI lower CI upper
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+0.69212 0.73297 0.06199 0.61146 0.85447
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+0.90000 0.95500 0.02430 0.90737 1.00264
+\end_layout
+
+\begin_layout Plain Layout
+
+\family typewriter
+0.36300 0.25042 0.06463 0.12374 0.37710
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+check the script to see how to compute standard errors, etc.
+\end_layout
+
+\begin_layout Itemize
+minimization use SA works fine.
+ I haven't tried with gradient-based methods.
+\end_layout
+
+\begin_layout Standard
+The script 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+htmladdnormallink{EstimateStochasticVolatilityModel
+\backslash
+_MCMC.jl}{file:///home/michael/Mystuff/Econometrics/Examples/SBEM/EstimateStochas
+ticVolatilityModel
+\backslash
+_MCMC.jl}
+\end_layout
+
+\end_inset
+
+ estimates the same model using the same data set and the same auxiliary
+ statistics, but using MCMC, so we get a full posterior for each parameter,
+ instead of just a point estimate.
+ The likelihood is the asymptotic Gaussian likelihood of the auxiliary statistic
+s.
+ This lets us use Bayesian methods even if the small sample distribution
+ of the statistics is unknown.
+ This is a little time consuming, with simulation used to get the likelihood,
+ and then the MCMC steps.
+ However, the results are quite good, as we see in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MCMC-estimation-using"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Note that the true parameter values are 0.692, 0.9 and 0.363.
+ The posterior means are very close to the indirect inference point estimates
+ that were obtained, above.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:MCMC-estimation-using"
+
+\end_inset
+
+MCMC estimation using simulated moments and limited information quasi-likelihood
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Examples/SBEM/MCMC.svg
+	width 15cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The script 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+htmladdnormallink{Analyze.jl}{file:///home/michael/Mystuff/Econometrics/Examples/
+SBEM/NUTS/Analyze.jl}
+\end_layout
+
+\end_inset
+
+ also uses MCMC, but using a more sophisticated sampler, the 
+\begin_inset Quotes sld
+\end_inset
+
+No U-Turn
+\begin_inset Quotes srd
+\end_inset
+
+ sampler (NUTS), as implemented in the 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/tpapp/DynamicHMC.jl
+\end_layout
+
+\end_inset
+
+ package.
+ The two versions of MCMC give results that are pretty much the same.
+ The NUTS sampler is mostly self-tuning, which can be useful, but it is
+ slower to compute, at least for the two implementations given here.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+NUTS MCMC estimation using simulated moments and limited information quasi-likel
+ihood
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Examples/SBEM/NUTS/nuts.svg
+	width 15cm
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -61805,7 +62581,7 @@ For
 \end_layout
 
 \begin_layout Section
-Convergenge modes 
+Convergence modes 
 \end_layout
 
 \begin_layout Standard
@@ -63089,773 +63865,6 @@ help numhessian
 \end_inset
 
 
-\end_layout
-
-\begin_layout Chapter
-Introduction to Julia
-\end_layout
-
-\begin_layout Standard
-This chapter gives a brief introduction to Julia, explaining how to get
- it running, and giving some basic examples relevant to econometrics.
- There are also some pointers to sources of additional information.
- This is written for Julia version 0.6.x, and will be updated (hopefully)
- to keep up with developments.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Why Julia?
-\end_layout
-
-\begin_layout Itemize
-free: free in terms of $$$, and also, source code is free, so you can know
- exactly what it does, and you can modify it and contribute to it
-\end_layout
-
-\begin_layout Itemize
-multi-platform: runs on all the popular operating systems
-\end_layout
-
-\begin_layout Itemize
-fast: speed of well-written code is close to C or Fortan.
- Code relatively easy to write, similar to Matlab.
-\end_layout
-
-\begin_layout Itemize
-these 3 considerations are essentially necessary for a language for modern
- science that seeks to be verifiable and open
-\end_layout
-
-\begin_layout Itemize
-also, it's fun: the ecosystem is still developing rapidly, plenty of room
- to contribute
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Why not Julia?
-\end_layout
-
-\begin_layout Itemize
-JIT requires warming up, first calls to functions take a bit of time.
- Interactive use may frustrate, unless you work around this.
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-will get better in time, as support for pre-compilation improves
-\end_layout
-
-\begin_layout Itemize
-can be dealt with quite easily by warming up functions with toy usages
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-the speed is only needed if your work is computationally demanding.
- For getting fast results for linear models, you may prefer a more complete
- canned package, e.g., Stata, etc.
-\end_layout
-
-\begin_layout Itemize
-the ecosystem is still developing, some features like DataFrames and plotting
- are not as complete stable as in other languages.
- However, I have been using it happily since 2014, and have been getting
- work done.
- 
-\strikeout on
-Once the 1.0 release is out, 
-\begin_inset Quotes sld
-\end_inset
-
-real soon now
-\begin_inset Quotes srd
-\end_inset
-
-, things will stabilize
-\strikeout default
- Strike that! Julia 1.0 was released in August 2018.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Resources
-\end_layout
-
-\begin_layout Itemize
-Julia language: 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://julialang.org/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-Juno editor :
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://junolab.org/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-packages: 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://pkg.julialang.org/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-tutorials:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://github.com/PaulSoderlind/JuliaTutorial
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://ucidatascienceinitiative.github.io/IntroToJulia/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://www.analyticsvidhya.com/blog/2017/10/comprehensive-tutorial-learn-data-sci
-ence-julia-from-scratch/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-Quantitative Economics: 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://lectures.quantecon.org/jl/index.html
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-Julia Economics blog: 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://juliaeconomics.com/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-comparison of programming languages for economics: 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://economics.sas.upenn.edu/~jesusfv/comparison_languages.pdf
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Installation of Julia and packages
-\end_layout
-
-\begin_layout Itemize
-install Julia stable version from 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://julialang.org/downloads/
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Itemize
-main commands for packages: 
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-
-\family typewriter
-Pkg.update()
-\family default
-.
- Find out what has been updated.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-Pkg.add() 
-\family default
-Add a new package.
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-Pkg.checkout()
-\family default
- Get the 
-\begin_inset Quotes srd
-\end_inset
-
-main
-\begin_inset Quotes srd
-\end_inset
-
- git branch version, instead of the last release.
- Could have new features, or might not work!
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-Pkg.clone() 
-\family default
-Obtain a package that is not registered in the Julia package system.
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-install PyPlot.jl.
- It needs a pre-existing python installation.
- On Linux, use it by executing
-\family typewriter
- ENV["PYTHON"]="/usr/bin/python";Pkg.build("PyCall")
-\end_layout
-
-\begin_layout Itemize
-get the support software from 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://github.com/mcreel/Econometrics.jl
-\end_layout
-
-\end_inset
-
- Execute, from the Julia prompt
-\family typewriter
- Pkg.clone("https://github.com/mcreel/Econometrics.jl.git") 
-\family default
-which will pull in a lot of required packages.
- TAKES QUITE A BIT OF TIME!
-\end_layout
-
-\begin_layout Itemize
-install Juno from 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://junolab.org/
-\end_layout
-
-\end_inset
-
-.
- This is a GUI editor environment which has some nice features for combining
- scripted and interactive usage.
- I will use it in my explanation.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Running Julia and the work flow
-\end_layout
-
-\begin_layout Subsection
-REPL and text editor
-\end_layout
-
-\begin_layout Itemize
-My main way of working for research.
- Simple and easy to replicate.
- 
-\end_layout
-
-\begin_layout Itemize
-Show it.
-\end_layout
-
-\begin_layout Subsection
-IJulia/Jupyter notebooks
-\end_layout
-
-\begin_layout Itemize
-Good for presentations, but I find it cumbersome for research.
-\end_layout
-
-\begin_layout Itemize
-Show it by doing 
-\family typewriter
-Pkg.add("IJulia"); using IJulia; notebook()
-\end_layout
-
-\begin_layout Subsection
-Juno/Atom
-\end_layout
-
-\begin_layout Standard
-This is what I will use to present this introduction.
- Nice, because it allows evaluation line-by-line, or by blocks of code.
-\end_layout
-
-\begin_layout Subsection
-JuliaBox
-\end_layout
-
-\begin_layout Standard
-A way to try Julia out, without installation .
- Uses IJulia.
- See 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-www.juliabox.com
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Loading/saving data
-\end_layout
-
-\begin_layout Standard
-Example data sets:
-\end_layout
-
-\begin_layout Standard
-CSV with names: 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://github.com/mcreel/Econometrics/blob/master/Examples/Data/card.csv
-\end_layout
-
-\end_inset
-
-, and
-\end_layout
-
-\begin_layout Standard
-plain text, space delimited: 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://github.com/mcreel/Econometrics/blob/master/Examples/Data/nerlove.data
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-readdlm, writedlm.
- 
-\end_layout
-
-\begin_layout Itemize
-CSV.jl: readtable() for reading CSV files with variable names in the first
- row
-\end_layout
-
-\begin_layout Itemize
-writeldlm, CSV.write
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Lab 1
-\end_layout
-
-\begin_layout Itemize
-get into REPL, and do some basic operations
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-add a package
-\end_layout
-
-\begin_layout Itemize
-define an array
-\end_layout
-
-\begin_layout Itemize
-extract a column
-\end_layout
-
-\begin_layout Itemize
-etc.
-\end_layout
-
-\end_deeper
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Exploratory analysis and plotting
-\end_layout
-
-\begin_layout Itemize
-Using DataFrames and StatPlots for exploratory analysis: 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
- 
-\backslash
-htmladdnormallink{BasicDataAnalysis.jl}{file:///home/michael/Mystuff/Econometrics
-/Examples/Julia/BasicDataAnalysis.jl} 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-Data wrangling: transforming, adding variables, etc.: 
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
- 
-\backslash
-htmladdnormallink{DataWrangling.jl}{file:///home/michael/Mystuff/Econometrics/Exa
-mples/Julia/DataWrangling.jl} 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://www.juliabloggers.com/data-wrangling-in-julia-based-on-dplyr-flights-tutor
-ials/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_deeper
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Lab 2
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Optimization
-\end_layout
-
-\begin_layout Itemize
-unconstrained: 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://github.com/JuliaNLSolvers/Optim.jl
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-constrained: 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://github.com/JuliaOpt/NLopt.jl
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-global: 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Modeling
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Lab 3
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Performance considerations
-\end_layout
-
-\begin_layout Itemize
-Basic info: 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-https://docs.julialang.org/en/stable/manual/performance-tips/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-Some more details: 
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://www.stochasticlifestyle.com/7-julia-gotchas-handle/
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Several examples
-\end_layout
-
-\begin_layout Itemize
-neural nets (MLP) 
-\end_layout
-
-\begin_layout Itemize
-MCMC and Chernozhukov-Hong Laplace-type estimation of QIV model 
-\end_layout
-
-\begin_layout Itemize
-MSM 
-\end_layout
-
-\begin_layout Itemize
-NN Indirect inference
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Lab 4
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage newpage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Case studies
 \end_layout
 
 \begin_layout Standard

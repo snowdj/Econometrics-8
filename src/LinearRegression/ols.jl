@@ -31,11 +31,11 @@ end
 
 
 # version for dataframe and formula
-function ols(f::Formula, df::DataFrame; R=[], r=[], names="", vc="white", silent=false)
-    y = df[f.lhs]
-    mf = ModelFrame(f,df)
-    x = ModelMatrix(mf).m
-    ols(y, x, names=coefnames(mf))
+function ols(f::FormulaTerm, df::DataFrame; R=[], r=[], names="", vc="white", silent=false)
+    y = modelmatrix(f.lhs,df)
+    x = modelmatrix(f,df)
+    ff = apply_schema(f,schema(df))
+    ols(y, x, names=coefnames(ff.rhs))
 end
 
 function ols(y::Array{Float64}, x::Array{Float64,2}; R=[], r=[], names="", vc="white", silent=false)

@@ -1,7 +1,8 @@
-using Random
+using Random, Econometrics
 """
-nonparametric regression, using pre-generated weights
-can be local constant, local linear, or local quadratic
+nonparametric regression and quantile regression
+* uses pre-generated kernel weights
+* can be local constant, local linear, or local quadratic
 
 y is n X p
 
@@ -14,28 +15,56 @@ weights is n X neval (different weights for each eval. point)
 weights should sum to one by columns, they are typical 
 nonparametric weights from a kernel.
 
+keyword order=0,1 or 2 for local consant, local linear, or local quadratic
+(default local linear)
+
+keyword do_median (default false)
+keyword do_ci to compute .05 and 0.95 quantiles
+
 execute npreg() for an example
 """
 function npreg()
     println("npreg(), with no arguments, runs a simple example")
     println("execute edit(npreg,()) to see the code")
     #using Plots
-    order = 2 # 0 for local constant, 1 for local linear, 2 for local quadratic
     k = 3 # number of regressors
     Random.seed!(1) # set seed to enable testing
-    bandwidth = 0.07
-    n = 100000
+    n = 10000
+    bandwidth = 0.25*n^(-1.0/(4 + k))
     neval = 100
     x = rand(n,k)*pi*2.0
     xeval = [pi*ones(neval,k-1) range(pi/2., stop=pi*1.5, length=neval)]
-    y = cos.(sum(x,dims=2)) + cos.(2. * sum(x,dims=2)) + 0.5*randn(n,1)
-    ytrue = cos.(sum(xeval,dims=2)) + cos.(2. * sum(xeval,dims=2))
-    weights = kernelweights(x, xeval, bandwidth, true, "gaussian", 200)
-    yhat = npreg(y, x, xeval, weights, order)
-    #plot(xeval[:,k], [yhat ytrue])
+    y = cos.(sum(x,dims=2))
+    y = y + 0.1*randn(size(y))
+    ytrue = cos.(sum(xeval,dims=2))
+    weights = kernelweights(x, xeval, bandwidth, true, "knngaussian", 200)
+    yhat, y50, y05, y95 = npreg(y, x, xeval, weights, order=1, do_median=true, do_ci=true)
+    println("true, mean, median, q05, q95")
+    prettyprint([ytrue yhat y50 y05 y95])
+    return yhat[1,1] # for testing
 end 
 
-function npreg(y::Array{Float64,2}, x::Array{Float64,2}, xeval::Array{Float64,2}, weights::Array{Float64,2}, order::Int64=1, do_median::Bool=false, do_ci::Bool=false)
+function npreg(x::Int64)
+    #println("npreg(), with a single integer argument, runs a test, using the npreg() example")
+    #using Plots
+    k = 3 # number of regressors
+    Random.seed!(1) # set seed to enable testing
+    n = 10000
+    bandwidth = 0.25*n^(-1.0/(4 + k))
+    neval = 100
+    x = rand(n,k)*pi*2.0
+    xeval = [pi*ones(neval,k-1) range(pi/2., stop=pi*1.5, length=neval)]
+    y = cos.(sum(x,dims=2))
+    y = y + 0.1*randn(size(y))
+    ytrue = cos.(sum(xeval,dims=2))
+    weights = kernelweights(x, xeval, bandwidth, true, "knngaussian", 200)
+    yhat, y50, y05, y95 = npreg(y, x, xeval, weights, order=1, do_median=true, do_ci=true)
+    return yhat[1,1] # for testing
+end 
+
+
+
+function npreg(y, x, xeval, weights; order=1, do_median=false, do_ci=false)
     weights = sqrt.(weights)
     neval, dimx = size(xeval)
     n, dimy = size(y)
@@ -65,11 +94,36 @@ function npreg(y::Array{Float64,2}, x::Array{Float64,2}, xeval::Array{Float64,2}
     end
     # do the fit
     yhat = zeros(neval, dimy)
+    y50 = nothing
+    y05 = nothing
+    y95 = nothing
+    if do_median y50 = zeros(neval, dimy) end
+    if do_ci
+        y05 = zeros(neval, dimy)
+        y95 = zeros(neval, dimy)
+    end
     for i = 1:neval
         WX = weights[:,i] .* X
         Wy = weights[:,i] .* y
         b = WX\Wy
-        yhat[i,:] = Xeval[[i],:]*b
+        yhat[i,:] = Xeval[i:i,:]*b
+        if do_median
+            for j = 1:dimy
+                y50[i,j] = (Xeval[i:i,:]*qreg_coef(Wy[:,j], WX, 0.5))[1,1]
+            end
+        end    
+        if do_ci
+            for j = 1:dimy
+                y05[i,j] = (Xeval[i:i,:]*qreg_coef(Wy[:,j], WX, 0.05))[1,1]
+                y95[i,j] = (Xeval[i:i,:]*qreg_coef(Wy[:,j], WX, 0.95))[1,1]
+            end
+        end    
+    end
+    if do_median==false
+        return yhat
+    elseif do_ci==false
+        return yhat, y50
+    else
+        return yhat, y50, y05, y95
     end    
-    return yhat
 end

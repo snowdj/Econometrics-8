@@ -1,11 +1,14 @@
 module Econometrics
-using Statistics, LinearAlgebra, Printf
-using NLopt, SpecialFunctions
-using StatsBase, StatsPlots, StatsFuns, StatsModels
-using Distributions, Distances, DataFrames, KernelDensity
-using Calculus, Optim, GR
+using Statistics, LinearAlgebra, Printf, Test
+using Plots, GR, StatsPlots
+using Optim, NLopt
+using Distributions, Distances, StatsBase, StatsFuns, StatsModels
+using SpecialFunctions
+using DataFrames, KernelDensity, Calculus, DataFramesMeta, CSV, MPI
 # Utilities
+include("Utilities/montecarlo.jl")
 include("Utilities/stnorm.jl")
+include("Utilities/ma.jl")
 include("Utilities/trim.jl")
 include("Utilities/prettyprint.jl")
 include("Utilities/eye.jl")
@@ -20,12 +23,15 @@ include("Utilities/clc.jl")
 # linear regression
 include("LinearRegression/lsfit.jl")
 include("LinearRegression/ols.jl")
+include("LinearRegression/ridge.jl")
+include("LinearRegression/rsq.jl")
 include("LinearRegression/tsls.jl")
 include("LinearRegression/TestStatistics.jl")
 # Bayesian
 include("Bayesian/mcmc.jl")
 # nonparametrics
 include("NP/npreg.jl")
+include("NP/InteriorPoint.jl")
 include("NP/npdens.jl")
 include("NP/bootstrap.jl")
 include("NP/npdensity.jl")
@@ -51,12 +57,12 @@ include("ML/Likelihoods/normal.jl")
 include("GMM/gmm.jl")
 include("GMM/gmmresults.jl")
 
-export stnorm, trim, prettyprint, eye, sortbyc, dstats, lag, lags, vech
+export montecarlo, stnorm, ma, trim, prettyprint, eye, sortbyc, dstats, lag, lags, vech
 export clc, PrintDivider, PrintEstimationResults
-export lsfit, ols, tsls, TestStatistics, NeweyWest
+export lsfit, ols, ridge, rsq, tsls, TestStatistics, NeweyWest
 export mcmc
 export npreg, npdens, kernelweights, bootstrap
-export npdensity
+export npdensity, InteriorPoint
 #export TrainNet, AnalyzeNet
 export samin, fminunc, fmincon
 export mle, mleresults

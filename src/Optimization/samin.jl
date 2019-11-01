@@ -120,6 +120,24 @@ function samin()
     return xtest, ftest
 end
 
+function samin(x::Int64)
+    # samin(), with a single integer arguments, runs the same code as first example,
+    # but silently, for a test
+    junk=2. # shows use of obj. fun. as a closure
+    function sse(x)
+        objvalue = junk + sum(x.*x)
+    end
+    k = 5
+    Random.seed!(1)
+    x = rand(k,1)
+    lb = -ones(k,1)
+    ub = -lb
+    # converge to global opt, see final parameters
+    #println("normal convergence, see only final results")
+    xtest, ftest, junk = samin(sse, x, lb, ub, verbosity=0)
+    return xtest, ftest
+end
+
 function samin(obj_fn, x, lb, ub; nt=5, ns=5, rt=0.5, maxevals=1e6, neps=5, functol=1e-8, paramtol=1e-5, verbosity=1, coverage_ok=0)
     n = size(x,1) # dimension of parameter
     #  Set initial values
@@ -206,7 +224,7 @@ function samin(obj_fn, x, lb, ub; nt=5, ns=5, rt=0.5, maxevals=1e6, neps=5, func
                                 println("SAMIN results")
                                 printstyled(color=:red, "==> NO CONVERGENCE <== MAXEVALS exceeded")
                                 println()
-                                @printf("\n     Obj. value:  %16.5f\n\n", fopt)
+                                @printf("\n     Obj. value:  %16.10f\n\n", fopt)
                                 if(verbosity >=2)
                                     println("       parameter      search width")
                                     for i=1:n
@@ -246,7 +264,7 @@ function samin(obj_fn, x, lb, ub; nt=5, ns=5, rt=0.5, maxevals=1e6, neps=5, func
         if(verbosity >= 2)
             println("samin: intermediate results before next temperature change")
             println("temperature: ", round(t, digits=5))
-            println("current best function value: ", round(fopt, digits=5))
+            println("current best function value: ", round(fopt, digits=10))
             println("total evaluations so far: ", func_evals)
             println("total moves since last temperature reduction: ", nup + ndown + nrej)
             println("downhill: ", nup)
@@ -264,7 +282,7 @@ function samin(obj_fn, x, lb, ub; nt=5, ns=5, rt=0.5, maxevals=1e6, neps=5, func
             println()
         end
         # Check for convergence, if we have covered the parameter space
-        if (coverage_ok)
+        if (coverage_ok==1)
             # last value close enough to last neps values?
             fstar[1] = f
             test = 0
