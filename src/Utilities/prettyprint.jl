@@ -1,6 +1,25 @@
-using Printf
+using PrettyTables
+
+function prettyprint(a, cnames="", rnames="")
+if rnames !=""
+    rnames = rnames[:]
+    a = [rnames a]
+    if cnames != ""
+        cnames = cnames[:]
+        cnames = vcat("", cnames)
+    end    
+end
+if cnames !=""
+    pretty_table(a, cnames; formatters=ft_printf("%12.5f"))
+else
+    pretty_table(a; formatters=ft_printf("%12.5f"))
+end
+end
+
+#=
+#using Printf
 # formatted print of array, with column names
-function prettyprint(a::Array{Float64}, cnames="", rnames="",digits=12, decimals=5)
+function prettyprint(a, cnames="", rnames="",digits=12, decimals=5)
     # TBD: try to use this to allow using specified digits and decimals
     #fmt = @sprintf("%d",digits)"."@sprintf("%d",decimals)"%f"
     #@eval dofmt(x) = @sprintf($fmt, x)
@@ -28,4 +47,5 @@ function prettyprint(a::Array{Float64}, cnames="", rnames="",digits=12, decimals
         @printf("\n")
     end
     return
-end  
+end
+=#

@@ -1,4 +1,4 @@
-using Distributions, Econometrics
+using Distributions, Econometrics, Plots
 function main()
 # sample is from exponential, prior is lognormal, proposal is random walk lognormal
 y = rand(Exponential(3.0),30)

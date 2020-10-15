@@ -32,32 +32,43 @@ function mcmc()
     return
 end
 
-# method to allow skipping proposal density when symmetric
-function mcmc(θ, reps, burnin, Prior, lnL, Proposal::Function, report=true::Bool)
-    ProposalDensity = (a,b) -> 1.0
-    mcmc(θ, reps, burnin, Prior, lnL, Proposal, ProposalDensity, report)
-end    
 
+# method using threads and symmetric proposal
+function mcmc(θ, reps::Int64, burnin::Int64, Prior::Function, lnL::Function, Proposal::Function, report::Bool, nthreads::Int64)
+    chain = zeros(Int(reps*nthreads), size(θ,1)+1)
+    Threads.@threads for t = 1:nthreads # collect the results from the threads
+        chain[t*reps-reps+1:t*reps,:] = mcmc(θ, reps, burnin, Prior, lnL, Proposal, report) 
+    end    
+    return chain
+end
+
+
+# method symmetric proposal
 # the main loop
-function mcmc(θ, reps, burnin, Prior, lnL, Proposal::Function, ProposalDensity::Function, report=true::Bool)
+function mcmc(θ, reps::Int64, burnin::Int64, Prior::Function, lnL::Function, Proposal::Function, report::Bool=true)
     reportevery = Int((reps+burnin)/10)
     lnLθ = lnL(θ)
     chain = zeros(reps, size(θ,1)+1)
     naccept = zeros(size(θ))
     for rep = 1:reps+burnin
         θᵗ = Proposal(θ) # new trial value
-        changed = Int.(.!(θᵗ .== θ)) # find which changed
-        lnLθᵗ = lnL(θᵗ)
-        # MH accept/reject
-        accept = rand() < 
-            exp(lnLθᵗ-lnLθ)*
-            Prior(θᵗ)/Prior(θ)*
-            ProposalDensity(θ,θᵗ)/ProposalDensity(θᵗ,θ)
-        if accept
-            θ = copy(θᵗ)
-            lnLθ = lnLθᵗ 
+        if report
+            changed = Int.(.!(θᵗ .== θ)) # find which changed
+        end    
+        # MH accept/reject: only evaluate logL if proposal is in support of prior (avoid crashes)
+        pt = Prior(θᵗ)
+        accept = false
+        if pt > 0.0
+            lnLθᵗ = lnL(θᵗ)
+            accept = rand() < exp(lnLθᵗ-lnLθ) * pt/Prior(θ)
+            if accept
+                θ = θᵗ
+                lnLθ = lnLθᵗ 
+            end
         end
-        naccept = naccept .+ changed .* Int.(accept)
+        if report
+            naccept = naccept .+ changed .* Int.(accept)
+        end    
         if (mod(rep,reportevery)==0 && report)
             println("current parameters: ", round.(θ,digits=3))
             println("  acceptance rates: ", round.(naccept/reportevery,digits=3))
@@ -70,4 +81,45 @@ function mcmc(θ, reps, burnin, Prior, lnL, Proposal::Function, ProposalDensity:
     return chain
 end
 
+#=
+# the main loop
+function mcmc(θ, reps, burnin, Prior, lnL, Proposal::Function, ProposalDensity::Function, report=true::Bool)
+    reportevery = Int((reps+burnin)/10)
+    lnLθ = lnL(θ)
+    chain = zeros(reps, size(θ,1)+1)
+    naccept = zeros(size(θ))
+    for rep = 1:reps+burnin
+        θᵗ = Proposal(θ) # new trial value
+        if report
+            changed = Int.(.!(θᵗ .== θ)) # find which changed
+        end    
+        # MH accept/reject: only evaluate logL if proposal is in support of prior (avoid crashes)
+        pt = Prior(θᵗ)
+        accept = false
+        if pt > 0.0
+            lnLθᵗ = lnL(θᵗ)
+            accept = rand() < 
+            exp(lnLθᵗ-lnLθ)*
+            pt/Prior(θ)*
+            ProposalDensity(θ,θᵗ)/ProposalDensity(θᵗ,θ)
+            if accept
+                θ = θᵗ
+                lnLθ = lnLθᵗ 
+            end
+        end
+        if report
+            naccept = naccept .+ changed .* Int.(accept)
+        end    
+        if (mod(rep,reportevery)==0 && report)
+            println("current parameters: ", round.(θ,digits=3))
+            println("  acceptance rates: ", round.(naccept/reportevery,digits=3))
+            naccept = naccept - naccept
+        end    
+        if rep > burnin
+            chain[rep-burnin,:] = [θ; accept]
+        end    
+    end
+    return chain
+end
+=#
 

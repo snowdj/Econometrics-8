@@ -5,24 +5,38 @@
 # converted to Julia 25 Aug. 2017
 # 
 # purpose: calculates qF, Wald, Score and Likelihood Ratio tests for
-# linear model						 y=XB+e
-# 									 e~N(0,sig^2*I_n)
-# subject to linear restrictions  	 RB=r
+# linear model
+#       y=XB+e
+#       e~N(0,sig^2*I_n)
+# subject to linear restrictions
+#       RB=r
 # 
 # format: [qF, W, LR, S] = TestStatistics(y,x,R,r)
 # 
 # inputs:
-# 		 y: nx1 dependent variable
-# 		 x: nxk regressor matrix
-# 		 R: R above, a qxk matrix
-# 		 r: r above, a qx1 vector
+#       y: nx1 dependent variable
+#       x: nxk regressor matrix
+#       R: R above, a qxk matrix
+#       r: r above, a qx1 vector
 # 
 # returns: 
-#        qF: the qF statistic
-# 		 W: the Wald statistic
-# 		 S: the score statistic
-# 		 LR: the likelihood ratio statistic
+#       qF: the qF statistic
+#       W: the Wald statistic
+#       S: the score statistic
+#       LR: the likelihood ratio statistic
 using StatsFuns
+
+# with no args, run an example
+function TestStatistics()
+    n = 30
+    k = 3
+    x = [ones(n) randn(n,k-1)]
+    y = x*ones(k,1) + randn(n)
+    R = ones(1,k) # restriction (true) is that coefs add up to k
+    r = k
+    TestStatistics(y,x,R,r)
+end
+
 function TestStatistics(y, x, R, r; silent=false)
     n,k = size(x)
     q = size(R,1)
@@ -39,9 +53,9 @@ function TestStatistics(y, x, R, r; silent=false)
     sigsqhat_mle_r = ess_r/(n)
     # F-test
     F = (ess_r-ess)/(q*sigsqhat_ols)
-    # Wald test (uses unrestricted model's est. of sig^2
+    # Wald test (uses unrestricted model's est. of sig^2)
     W = (R*b.-r)'*P_inv*(R*b.-r)/sigsqhat_mle
-    # Score test (uses restricted model's est. of sig^2 
+    # Score test (uses restricted model's est. of sig^2)
     P_x = x * xx_inv * x'
     S = e_r' * P_x * e_r/(sigsqhat_mle_r)
     # LR test
@@ -50,7 +64,7 @@ function TestStatistics(y, x, R, r; silent=false)
     LR = 2.0*(lnl-lnl_r)
 	if !silent
         tests = [q*F[1], W[1], LR[1], S[1]]
-	    pvalues = chisqccdf.(tests,q)
+	    pvalues = chisqccdf.(q,tests)
         tests = [tests pvalues]
 	    TESTS = ["qF","Wald","LR","Score"]
 	    labels = ["Value","p-value"]
